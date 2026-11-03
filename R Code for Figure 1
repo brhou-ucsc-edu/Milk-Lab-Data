@@ -51,26 +51,12 @@ legend("topright",
        legend = c("Red Value",
                   "Red Linear Regression Line:",
                   red_equation,
-                  red_rsqr_statement,
-                  NA,
-               
-                  "Error bars reflect digital",
-                  "analysis uncertainty (±0.001)"), 
-       col = c("red", "red", NA, NA, NA,  NA, NA, NA, "blue", "blue"),
+                  red_rsqr_statement), 
+       col = c("red", "red" ),
        pch = c(16, NA, NA, NA, NA),
-       lwd = c(NA, 2, NA, NA, NA, NA, 2, NA, NA, NA, NA, 2, NA),
+       lwd = c(NA, 2, NA, NA, NA, NA, 2),
        cex = 1.082
 )
-
-# Calculate error bounds
-error_margin <- 0.1
-error_lower_red <- Red - error_margin
-error_upper_red <- Red + error_margin
-
-# Draw error bars Red
-arrows(x0 = concentration, y0 = error_lower_red, 
-       x1 = concentration, y1 = error_upper_red,
-       code = 3, angle = 90, length = 0.05, col = "black")
 
 
 #if false just means I make sure this section doesnt run for now, keeps returning errors since I havent updated this part yet.
