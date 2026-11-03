@@ -1,0 +1,130 @@
+# Calibration data
+concentration <- c(1.0, 2.0, 3.0, 4.0, 5.0) #mg/mL 80:20 casein:BSA
+Red <- c(171.795, 152.021, 126.513, 134.823, 115.414) #Redness (R value)
+Green <- c(160.327, 147.005, 135.149, 143.136, 134.955) #Greeness (G value)
+Blue <- c(75.103, 73.682, 59.018, 87.444, 88.49) #Blueness (B value)
+
+
+# Plot scatter points, with Red as Y
+plot(concentration, Red,
+     
+     pch = 16, # Solid circles for the data points
+     col = "red",    # Color of the data points
+     main = "Calibration Curve",
+     xlab = "Concentration (mg/mL)", 
+     ylab = "R.G.B.",
+     las = 1,               #label style, axis labels
+     xlim = c(1, 9), ylim = c(50, 175)
+     ) # Set limits on x and y axis so all data can be displayed
+
+
+# Plot scatter points with Green as Y
+points(concentration, Green,
+       
+       pch = 16,            # Solid squares for data points
+       col = "darkgreen",   # Color of the data points
+)
+
+# Plot scatter points with Blue as Y
+points(concentration, Blue,
+       
+       pch = 16,            # Solid squares for data points
+       col = "blue",   # Color of the data points
+)
+
+# Linear regression Line for Red
+fit_red <- lm(Red ~ concentration)
+abline(fit_red, col = "red", lwd = 2, lty = 1) # Solid red line
+
+# Linear regression Line for Green
+fit_green <- lm(Green ~ concentration)
+abline(fit_green, col = "darkgreen", lwd = 2, lty = 1) # Solid green line
+
+# Linear regression Line for Blue
+fit_blue <- lm(Blue ~ concentration)
+abline(fit_blue, col = "blue", lwd = 2, lty = 1) # Solid blue line
+
+# Fetch and organize and format data about linear regression model
+summary(fit_red)
+red_info <- summary(fit_red)
+red_rsqr <- red_info$r.squared
+red_rsqr_statement <- bquote(R^2 == .(red_rsqr))
+red_yint <- red_info$coefficients[1,1]
+red_slope <- red_info$coefficients[2,1]
+red_equation <- sprintf("y = %.3f + %.3fx", red_yint, red_slope) #sprintf() means string print, %.3f means format floating point number to 3 decimal places
+
+summary(fit_green)
+green_info <- summary(fit_green)
+green_rsqr <- green_info$r.squared
+green_rsqr_statement <- bquote(R^2 == .(green_rsqr))
+green_yint <- green_info$coefficients[1,1]
+green_slope <- green_info$coefficients[2,1]
+green_equation <- sprintf("y = %.3f + %.3fx", green_yint, green_slope)
+
+summary(fit_blue)
+blue_info <- summary(fit_blue)
+blue_rsqr <- blue_info$r.squared
+blue_rsqr_statement <- bquote(R^2 == .(blue_rsqr))
+blue_yint <- blue_info$coefficients[1,1]
+blue_slope <- blue_info$coefficients[2,1]
+blue_equation <- sprintf("y = %.3f + %.3fx", blue_yint, blue_slope)
+
+# Add legend to label linear regression line
+legend("topright", 
+       legend = c("Red Value",
+                  "Red Linear Regression Line:",
+                  red_equation,
+                  red_rsqr_statement,
+                  NA,
+                  "Green Value",
+                  "Green Linear Regression Line:",
+                  green_equation,
+                  green_rsqr_statement,
+                  NA,
+                  "Blue Value",
+                  "Blue Linear Regression Line:",
+                  blue_equation,
+                  blue_rsqr_statement,
+                  NA,
+                  "Error bars reflect digital",
+                  "analysis uncertainty (±0.001)"), 
+       col = c("red", "red", NA, NA, NA, "darkgreen", "darkgreen", NA, NA, NA, "blue", "blue"),
+       pch = c(16, NA, NA, NA, NA),
+       lwd = c(NA, 2, NA, NA, NA, NA, 2, NA, NA, NA, NA, 2, NA),
+       cex = 1.082
+)
+
+# Calculate error bounds
+error_margin <- 0.1
+error_lower_red <- Red - error_margin
+error_upper_red <- Red + error_margin
+error_lower_green <- Green - error_margin
+error_upper_green <- Green + error_margin
+error_lower_blue <- Blue - error_margin
+error_upper_blue <- Blue + error_margin
+
+# Draw error bars Red
+arrows(x0 = concentration, y0 = error_lower_red, 
+       x1 = concentration, y1 = error_upper_red,
+       code = 3, angle = 90, length = 0.05, col = "black")
+
+# Draw error bars Green
+arrows(x0 = concentration, y0 = error_lower_green, 
+       x1 = concentration, y1 = error_upper_green,
+       code = 3, angle = 90, length = 0.05, col = "black")
+
+# Draw error bars Blue
+arrows(x0 = concentration, y0 = error_lower_blue, 
+       x1 = concentration, y1 = error_upper_blue,
+       code = 3, angle = 90, length = 0.05, col = "black")
+
+  #if false just means I make sure this section doesnt run for now, keeps returning errors since I havent updated this part yet.
+  if (FALSE) {
+    # Display data about linear regression model
+    text(x = 8, y = 100,
+         labels = "y = 0.15607x - 0.07031
+Intercept =  -0.07031
+     Multiple R-squared:  0.944
+     Error bars reflect spectrophotometer uncertainty (± 0.001)", col = "black", cex = 1, font = 1
+    )
+  }
