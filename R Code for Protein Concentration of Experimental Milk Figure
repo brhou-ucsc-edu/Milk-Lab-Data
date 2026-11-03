@@ -1,0 +1,35 @@
+# Define data
+heights <- c(6.1, 2.4)
+categories <- c("Whole Milk", "Almond Milk")
+
+# Standard deviation values
+std_devs <- c(1.8, 2.4) 
+
+# Generate bar plot / Assign X-coordinates to a variable
+x_coords <- barplot(heights, 
+                    names.arg = categories, 
+                    col = "skyblue", 
+                    main = "Protein Concentration of Experimental Milk",
+                    ylim = c(0, 10), 
+                    xlab = "Experimental Milk", 
+                    ylab = "Protein Concentration (mg/mL)")
+
+# Error Bars
+arrows(x0 = x_coords,                     
+       y0 = heights - std_devs,           
+       x1 = x_coords,                    
+       y1 = heights + std_devs,           
+       code = 3,                          
+       angle = 90,                        
+       length = 0.15,                    
+       col = "black",                     
+       lwd = 1.5)
+
+# Add legend
+legend("topright", 
+       legend = c("Whole Milk Standard Deviation: 1.8",
+                  "Almond Milk Standard Deviation: 2.4"), 
+       col = c("black", "black"),
+       lwd = c(1.5),
+       cex = 1
+)
